@@ -24,7 +24,7 @@ export default class MoviesController extends BaseApi {
         director: 'Freddy Smith'
       })
     } else {
-      throw new ValidationError('Body Error', { title: {message: 'title is required' }})
+      throw new ValidationError('Body Error', { title: {message: 'required' }})
     }
   }
 
