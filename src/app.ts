@@ -5,7 +5,8 @@ import addErrorHandler from './middleware/error-handler'
 
 export default class App {
   public constructor (
-    public app: express.Express = express()
+    public app: express.Express = express(),
+    public testMode: boolean = false
   ) {
     this.middleware()
     this.routes()
@@ -16,6 +17,10 @@ export default class App {
     this.app.listen(3000, () => {
       console.log('Listining on 3000')
     })
+  }
+
+  public getServer (): express.Express {
+    return this.app
   }
 
   private middleware (): void {
@@ -32,5 +37,3 @@ export default class App {
     this.app.use(addErrorHandler)
   }
 }
-
-new App().start()

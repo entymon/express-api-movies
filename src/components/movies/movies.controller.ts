@@ -16,7 +16,14 @@ export default class MoviesController extends BaseApi {
   }
 
   public createMovie (req: Request, res: Response, next: NextFunction): void {
-    res.send('Hello POST')
+  
+    res.status(201).json({ 
+      genres: ['Comedy'],
+      title: 'Saw',
+      year: 1876,
+      runtime: 14000,
+      director: 'Freddy Smith'
+    })
   }
 
   public returnMovies (req: Request, res: Response, next: NextFunction): void {

@@ -4,7 +4,7 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 
 module.exports = {
 
-  entry: './src/app.ts',
+  entry: './src/index.ts',
   
   // Write the output to the .aws-sam/build folder
   output: {
