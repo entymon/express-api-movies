@@ -1,6 +1,6 @@
 import { Application, NextFunction, Request, Response } from 'express'
 import BaseApi from '../base-api'
-import ValidationError from '../errors/validation-error'
+import ValidationError from '@/errors/validation.error'
 
 export default class MoviesController extends BaseApi {
   constructor (express: Application) {

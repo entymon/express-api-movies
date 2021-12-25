@@ -1,13 +1,13 @@
-import { TField, IError } from "./api-error"
+import { IError } from "./error.interface"
 
 class ValidationError extends Error implements IError {
   public status = 400
 
   public success = false
 
-  public fields: TField
+  public fields: TValidationErrorFields
 
-  constructor (msg: string, fields: TField  = {name: {message: ''}}, name = 'ValidationError') {
+  constructor (msg: string, fields: TValidationErrorFields  = {name: {message: ''}}, name = 'ValidationError') {
     super()
     this.message = msg
     this.name = name

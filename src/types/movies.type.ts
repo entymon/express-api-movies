@@ -1,4 +1,4 @@
-type Movie = {
+type TMovie = {
   genres: string[]
   title: string
   year: number

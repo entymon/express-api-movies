@@ -2,7 +2,7 @@ import * as express from 'express'
 import {
   StatusCodes
 } from 'http-status-codes'
-import { IError } from '@/components/errors/api-error'
+import { IError } from '@/errors/error.interface'
 
 const addErrorHandler = (
   err: IError, req: express.Request,

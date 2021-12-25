@@ -1,14 +1,4 @@
-export type TField = {
-  [key: string] : { message: string }
-}
-
-export interface IError {
-  status: number
-  fields: TField
-  message: string
-  name: string
-  stack?: unknown
-}
+import { IError } from "@/errors/error.interface"
 
 class ApiError extends Error implements IError {
   public status = 500
