@@ -27,6 +27,7 @@ export default class App {
     this.app.use(express.json({ limit: '100mb' }))
     this.app.use(express.urlencoded({ limit: '100mb', extended: true }))
     this.app.use(cors())
+    // TODO: authorisation middleware
   }
 
   private routes (): void {

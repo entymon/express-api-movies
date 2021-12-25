@@ -1,12 +1,13 @@
+export type TField = {
+  [key: string] : { message: string }
+}
+
 export interface IError {
   status: number
-  fields: {
-    name: {
-      message: string
-    }
-  }
+  fields: TField
   message: string
   name: string
+  stack?: unknown
 }
 
 class ApiError extends Error implements IError {

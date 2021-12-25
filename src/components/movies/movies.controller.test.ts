@@ -12,7 +12,7 @@ const payload = {
 }
 describe('MoviesController', () => {
 
-  beforeAll(() => {
+  beforeEach(() => {
     const app = new App()
     server = app.getServer()
   })
@@ -21,7 +21,7 @@ describe('MoviesController', () => {
 
     it ('makes a success call', async () => {
       await supertest(server).post('/api/movie')
-        .send({payload})
+        .send(payload)
         .expect(201)
         .then((response) => {
           expect(response.body).toStrictEqual(payload)
@@ -33,7 +33,9 @@ describe('MoviesController', () => {
         .send({})
         .expect(400)
         .then((response) => {
-          expect(response.body).toStrictEqual(payload)
+          expect(response.body.message).toBe('validation error')
+          expect(response.body.name).toBe('ValidationError')
+          expect(response.body.status).toEqual(400)
         })
     })
   })

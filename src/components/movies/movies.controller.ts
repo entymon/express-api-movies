@@ -1,7 +1,6 @@
 import { Application, NextFunction, Request, Response } from 'express'
 import BaseApi from '../base-api'
-// import * as responseHandler from '../../lib/response-handler';
-// import * from './movies.types';
+import ValidationError from '../errors/validation-error'
 
 export default class MoviesController extends BaseApi {
   constructor (express: Application) {
@@ -16,14 +15,17 @@ export default class MoviesController extends BaseApi {
   }
 
   public createMovie (req: Request, res: Response, next: NextFunction): void {
-  
-    res.status(201).json({ 
-      genres: ['Comedy'],
-      title: 'Saw',
-      year: 1876,
-      runtime: 14000,
-      director: 'Freddy Smith'
-    })
+    if (req.body.title) {
+      res.status(201).json({ 
+        genres: ['Comedy'],
+        title: 'Saw',
+        year: 1876,
+        runtime: 14000,
+        director: 'Freddy Smith'
+      })
+    } else {
+      throw new ValidationError('Body Error', { title: {message: 'title is required' }})
+    }
   }
 
   public returnMovies (req: Request, res: Response, next: NextFunction): void {
