@@ -2,7 +2,6 @@ import { TMovieData, TMovieRequest } from '@/types/movies.type';
 import ApiError from '@/errors/api.error';
 import BaseRepository from './base.repository';
 
-// TODO: add functionality to add new movie
 // TODO: add functionality to retrieve a movie
 
 class MovieRepository extends BaseRepository {
@@ -42,6 +41,18 @@ class MovieRepository extends BaseRepository {
 
     this.db.push('/movies[]', movieData, true);
     return movieData
+  }
+
+  public getMovies(duration: number | null = null) {
+    const movies = this.db.getData('/movies')
+    if (duration === 0) {
+      return [movies[Math.floor(Math.random() * movies.length)]];
+    } else {
+      const response: TMovieData[] = movies.filter((movie: TMovieData) => {
+        //
+      })
+      return response
+    }
   }
 }
 
