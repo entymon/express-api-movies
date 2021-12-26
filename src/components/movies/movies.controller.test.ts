@@ -2,7 +2,6 @@ import supertest from 'supertest'
 import { Express } from 'express'
 import App from '@/app'
 import MovieRepository from '@/libs/repositories/movie.repository'
-import { TMovieData } from '@/types/movies.type'
 
 let server: Express
 const payload = {
@@ -62,23 +61,6 @@ describe('MoviesController', () => {
         year: '1801',
         title: 'Lolek',
         director: 'Freddy Smith'
-      }
-      const expectedResponse = {
-        fields: [
-          {
-            year: {
-              message: 'invalid data type'
-            }
-          },
-          {
-            year: {
-              message: '1801? The cinematography wasn\'t invented yet!'
-            }
-          }
-        ],
-        message: 'validation error',
-        name: 'ValidationError',
-        status: 400
       }
       await supertest(server).post('/api/movie')
         .send(givenPayload)

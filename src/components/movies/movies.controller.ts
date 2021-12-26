@@ -20,7 +20,6 @@ export default class MoviesController extends BaseApi {
     try {
       const validator = new MovieValidation()
       validator.validate(req.body)
-      console.log(1, 'TEREWRER')
 
       const repo = MovieRepository.getInstance()
       const newMovie: TMovieData = repo.addMovie(req.body)
