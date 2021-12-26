@@ -5,7 +5,7 @@ import MovieRepository from '@/libs/repositories/movie.repository'
 
 let server: Express
 let repo: MovieRepository
-const populateDbTest = (repository: MovieRepository) => {
+const populateDbTest = (repository: MovieRepository): void => {
   repository.addMovie({ title: 'The Big Short', year: 2015, runtime: 130, genres: ['Biography', 'Comedy', 'Drama'], director: 'Adam McKay', actors: 'Ryan Gosling, Rudy Eisenzopf, Casey Groves, Charlie Talbert', plot: 'Four denizens in the world of high-finance predict the credit and housing bubble collapse of the mid-2000s, and decide to take on the big banks for their greed and lack of foresight.', posterUrl: 'https://images-na.ssl-images-amazon.com/images/M/MV5BNDc4MThhN2EtZjMzNC00ZDJmLThiZTgtNThlY2UxZWMzNjdkXkEyXkFqcGdeQXVyNDk3NzU2MTQ@._V1_SX300.jpg' })
   repository.addMovie({ title: 'The Hateful Eight', year: 2015, runtime: 187, genres: ['Crime', 'Drama', 'Mystery'], director: 'Quentin Tarantino', actors: 'Samuel L. Jackson, Kurt Russell, Jennifer Jason Leigh, Walton Goggins', plot: 'In the dead of a Wyoming winter, a bounty hunter and his prisoner find shelter in a cabin currently inhabited by a collection of nefarious characters.', posterUrl: 'https://images-na.ssl-images-amazon.com/images/M/MV5BMjA1MTc1NTg5NV5BMl5BanBnXkFtZTgwOTM2MDEzNzE@._V1_SX300.jpg' })
   repository.addMovie({ title: 'To Kill a Mockingbird', year: 1962, runtime: 129, genres: ['Crime', 'Drama'], director: 'Robert Mulligan', actors: 'Gregory Peck, John Megna, Frank Overton, Rosemary Murphy', plot: 'Atticus Finch, a lawyer in the Depression-era South, defends a black man against an undeserved rape charge, and his kids against prejudice.', posterUrl: 'http://ia.media-imdb.com/images/M/MV5BMjA4MzI1NDY2Nl5BMl5BanBnXkFtZTcwMTcyODc5Mw@@._V1_SX300.jpg' })
@@ -62,7 +62,7 @@ describe('MoviesController', () => {
         .send({})
         .expect(400)
         .then((response) => {
-          expect(response.body.fields.length > 0).toBeTruthy
+          expect(response.body.fields.length > 0).toBeTruthy()
           expect(response.body.message).toBe('validation error')
           expect(response.body.name).toBe('ValidationError')
           expect(response.body.status).toEqual(400)
@@ -83,7 +83,7 @@ describe('MoviesController', () => {
         .send(payload)
         .expect(400)
         .then((response) => {
-          expect(response.body.fields.length > 0).toBeTruthy
+          expect(response.body.fields.length > 0).toBeTruthy()
           expect(response.body.fields[0].year.message).toBe('invalid data type')
           expect(response.body.fields[1].year.message).toBe('1801? The cinematography wasn\'t invented yet!')
           expect(response.body.message).toBe('validation error')

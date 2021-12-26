@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import ValidationError from '@/errors/validation.error'
-import BaseValidation from './base.validation'
-import { IValidation } from './validation.interface'
+import BaseValidation, { IValidation } from './base.validation'
 
 export const createRequest = {
   genres: {

@@ -1,4 +1,3 @@
-import { TMovieData } from '@/types/movies.type'
 import MovieService from './movie.service'
 
 const movies = [

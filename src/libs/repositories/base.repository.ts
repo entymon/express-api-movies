@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import fs from 'fs'
 import appRoot from 'app-root-path'
 import { JsonDB } from 'node-json-db'

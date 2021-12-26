@@ -19,7 +19,7 @@ class MovieRepository extends BaseRepository {
    * clearMovies
    * Remove all movies data
    */
-  public clearMovies () {
+  public clearMovies (): void {
     this.db.push('/movies', [])
   }
 
@@ -28,7 +28,7 @@ class MovieRepository extends BaseRepository {
    *
    * @returns string[]
    */
-  public getMovieGenres () {
+  public getMovieGenres (): string[] {
     return this.db.getData('/genres')
   }
 
@@ -47,7 +47,7 @@ class MovieRepository extends BaseRepository {
     }
 
     const movieData: TMovieData = moviePayload
-    movieData.id = movies.length + 1
+    movieData.id = parseInt(movies.length) + 1
 
     this.db.push('/movies[]', movieData, true)
     return movieData
@@ -75,13 +75,13 @@ class MovieRepository extends BaseRepository {
     }
 
     if (duration === 0 && genres.length > 0) {
-      return await service.getOrderedMoviesByMatchOfGenres(movies, genres)
+      return service.getOrderedMoviesByMatchOfGenres(movies, genres)
     }
 
     if (duration !== 0 && genres.length > 0) {
       const response = await service.getMoviesForSelectedDuration(movies, duration)
       if (response.length > 0) {
-        return await service.getOrderedMoviesByMatchOfGenres(response, genres)
+        return service.getOrderedMoviesByMatchOfGenres(response, genres)
       }
     }
     return []
