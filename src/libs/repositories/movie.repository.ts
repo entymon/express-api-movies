@@ -78,24 +78,7 @@ class MovieRepository extends BaseRepository {
     }
 
     if (duration === 0 && genres.length > 0) {
-      let response: Array<TMovieDataWithGenreCounter> = []
-      response = movies.map((movie: TMovieDataWithGenreCounter) => {
-        const intersection = genres.filter(element => movie.genres.includes(element))
-        if (intersection.length !== 0) {
-          movie.counter = intersection.length
-          return movie
-        }
-      })
-
-      response = response.filter((movie: TMovieDataWithGenreCounter) => !!movie)
-
-      response.sort((a: TMovieDataWithGenreCounter ,b: TMovieDataWithGenreCounter) => {
-        if (a.counter && b.counter && a.counter > b.counter) { return -1 }
-        if (a.counter && b.counter && a.counter < b.counter) { return 1 }
-        return 0
-      })
-
-      return response
+      return this.getOrderedMoviesByMatchOfGenres(movies, genres)
     }
 
     if (duration !== 0 && genres.length > 0) {
@@ -105,6 +88,29 @@ class MovieRepository extends BaseRepository {
       }
     }
     return []
+  }
+
+  public getOrderedMoviesByMatchOfGenres(movies: Array<TMovieData>, genres: Array<string>): Array<TMovieData> {
+    const response = movies.filter((movie: TMovieDataWithGenreCounter) => {
+      const intersection = genres.filter(element => movie.genres.includes(element))
+      if (intersection.length !== 0) {
+        movie.counter = intersection.length
+        return movie
+      }
+    })
+
+    const final = response.filter(movie => !!movie)
+    final.sort((a: TMovieDataWithGenreCounter ,b: TMovieDataWithGenreCounter) => {
+      if (a.counter && b.counter && a.counter > b.counter) { return -1 }
+      if (a.counter && b.counter && a.counter < b.counter) { return 1 }
+      return 0
+    })
+    return final.map((movie: TMovieDataWithGenreCounter) => {
+      if (movie.counter) {
+        delete movie.counter
+      }
+      return movie
+    })
   }
 
   public getMoviesForSelectedDuration(movies: Array<TMovieData>, duration: number): Array<TMovieData> {
