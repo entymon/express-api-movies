@@ -84,7 +84,7 @@ class MovieRepository extends BaseRepository {
     if (duration !== 0 && genres.length > 0) {
       const response = this.getMoviesForSelectedDuration(movies, duration)
       if (response.length > 0) {
-        
+        return this.getOrderedMoviesByMatchOfGenres(response, genres)
       }
     }
     return []
