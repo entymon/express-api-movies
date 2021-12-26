@@ -5,15 +5,23 @@ import BaseRepository from './base.repository';
 
 class MovieRepository extends BaseRepository {
 
-  public static getInstance(): MovieRepository {
+  public static getInstance(fileName: string | null = null): MovieRepository {
     if (!MovieRepository.instance) {
-      MovieRepository.instance = new MovieRepository();
+      if (fileName) {
+        MovieRepository.instance = new MovieRepository(fileName)
+      } else {
+        MovieRepository.instance = new MovieRepository()
+      }
     }
-    return MovieRepository.instance;
+    return MovieRepository.instance
   }
 
   public getMovieGenres() {
       return this.db.getData('/genres')
+  }
+
+  public addMovie(movieData: TMovieRequest): boolean {
+    return true
   }
 }
 

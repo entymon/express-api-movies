@@ -1,15 +1,29 @@
+import ApiError from "@/errors/api.error"
 import MovieRepository from "./movie.repository"
 
 let repo: MovieRepository
+const payload = {
+  genres: ['Comedy'],
+  title: 'Saw',
+  year: 1876,
+  runtime: 14000,
+  director: 'Freddy Smith'
+}
+
 describe('MovieRepository', () => {
 
   beforeAll(() => {
-    repo = MovieRepository.getInstance()
+    repo = MovieRepository.getInstance('dbTest')
   })
 
-  describe('saveMovie', () => {
+  describe('addMovie', () => {
     it('throw an error for already added title', () => {
-      expect(1).toBe(1)
+      try {
+        repo.addMovie(payload)
+        repo.addMovie(payload)
+      } catch (error) {
+        expect(error).toBeInstanceOf(ApiError)
+      }
     })
 
     it('add new movie', () => {
