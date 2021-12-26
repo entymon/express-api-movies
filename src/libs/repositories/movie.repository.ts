@@ -1,3 +1,5 @@
+import { TMovieData, TMovieRequest } from '@/types/movies.type';
+import ApiError from '@/errors/api.error';
 import BaseRepository from './base.repository';
 
 // TODO: add functionality to add new movie
@@ -16,12 +18,30 @@ class MovieRepository extends BaseRepository {
     return MovieRepository.instance
   }
 
-  public getMovieGenres() {
-      return this.db.getData('/genres')
+  /**
+   * Remove all movies data
+   */
+  public clearMovies() {
+    this.db.push('/movies', []);
   }
 
-  public addMovie(movieData: TMovieRequest): boolean {
-    return true
+  public getMovieGenres() {
+    return this.db.getData('/genres')
+  }
+
+  public addMovie(moviePayload: TMovieRequest): TMovieData {
+    const movies = this.db.getData('/movies')
+
+    const duplication = movies.filter((movie: TMovieData) => movie.title === moviePayload.title)
+    if (duplication.length) {
+      throw new ApiError('Given title is already added', 400)
+    }
+
+    const movieData: TMovieData = moviePayload
+    movieData.id = movies.length + 1
+
+    this.db.push('/movies[]', movieData, true);
+    return movieData
   }
 }
 

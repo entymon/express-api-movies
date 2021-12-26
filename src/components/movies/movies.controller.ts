@@ -1,6 +1,8 @@
 import { Application, NextFunction, Request, Response } from 'express'
 import BaseApi from '../base-api'
 import MovieValidation from '@/libs/validations/movie.validation'
+import MovieRepository from '@/libs/repositories/movie.repository'
+import { TMovieData } from '@/types/movies.type'
 
 export default class MoviesController extends BaseApi {
   constructor (express: Application) {
@@ -18,11 +20,12 @@ export default class MoviesController extends BaseApi {
     try {
       const validator = new MovieValidation()
       validator.validate(req.body)
+      console.log(1, 'TEREWRER')
+
+      const repo = MovieRepository.getInstance()
+      const newMovie: TMovieData = repo.addMovie(req.body)
   
-      // TODO: check if title already exist -> ApiError
-      // TODO: save object
-  
-      res.status(201).json(req.body)
+      res.status(201).json(newMovie)
     } catch (error) {
       next(error)
     }

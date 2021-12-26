@@ -21,6 +21,7 @@
   "exclude": [
     "node_modules/**/*",
     ".webpack/**/*",
-    ".vscode/**/*"
+    ".vscode/**/*",
+    "./src/__tests__"
   ]
 }

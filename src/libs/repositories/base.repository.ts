@@ -11,7 +11,8 @@ abstract class BaseRepository {
   protected db: JsonDB
 
   protected constructor (
-    private filename = 'db'
+    // private filename = 'db' TODO: remove later
+    private filename = 'dbTest'
   ) {
     const path = (`${appRoot.path}/data/${this.filename}.json`).replace('/build', '')
     if (!fs.existsSync(path)) {

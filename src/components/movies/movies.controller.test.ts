@@ -1,9 +1,19 @@
 import supertest from 'supertest'
 import { Express } from 'express'
 import App from '@/app'
+import MovieRepository from '@/libs/repositories/movie.repository'
+import { TMovieData } from '@/types/movies.type'
 
 let server: Express
 const payload = {
+  genres: ['Comedy'],
+  title: 'Saw',
+  year: 1876,
+  runtime: 14000,
+  director: 'Freddy Smith'
+}
+const expectedData = {
+  id: 1,
   genres: ['Comedy'],
   title: 'Saw',
   year: 1876,
@@ -20,12 +30,15 @@ describe('MoviesController', () => {
   describe('createMovie', () => {
 
     it ('makes a success call', async () => {
+      const repo = MovieRepository.getInstance('dbTest')
+      repo.clearMovies()
+
       await supertest(server).post('/api/movie')
         .send(payload)
         .expect(201)
         .then((response) => {
-          expect(response.body).toStrictEqual(payload)
-        })  
+          expect(response.body).toStrictEqual(expectedData)
+        })
     })
   
     it ('makes a unsuccess call for required params needed', async () => {

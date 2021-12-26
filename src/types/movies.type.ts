@@ -1,4 +1,4 @@
-type TMovieRequest = { 
+export type TMovieRequest = { 
   genres: string[]
   title: string
   year: number
@@ -9,6 +9,9 @@ type TMovieRequest = {
   posterUrl?: string
 }
 
+export type TMovieData = TMovieRequest & {
+  id?: number
+}
 
 // - a list of genres (only predefined ones from db file) (required, array of predefined strings)
 // - title (required, string, max 255 characters)
