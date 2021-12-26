@@ -18,15 +18,10 @@ export default class MoviesController extends BaseApi {
     const validator = new MovieValidation()
     validator.validate(req.body)
 
+    // TODO: check if title already exist -> ApiError
     // TODO: save object
 
-    res.status(201).json({ 
-      genres: ['Comedy'],
-      title: 'Saw',
-      year: 1876,
-      runtime: 14000,
-      director: 'Freddy Smith'
-    })
+    res.status(201).json(req.body)
   }
 
   public returnMovies (req: Request, res: Response, next: NextFunction): void {

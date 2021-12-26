@@ -49,9 +49,9 @@ export default class MovieValidation extends BaseValidation implements IValidati
    * validate
    * 
    * @param requestBody 
-   * @returns 
+   * @returns boolean
    */
-  public validate(requestBody: any): void {
+  public validate(requestBody: any): boolean {
     let validationErrors: TValidationErrorFields = []
 
     validationErrors = this.checkIfAllowed(requestBody, validationErrors)    
@@ -68,8 +68,17 @@ export default class MovieValidation extends BaseValidation implements IValidati
     if (validationErrors.length) {
       throw new ValidationError('Request containes errors', validationErrors)
     }
+
+    return true
   }
 
+  /**
+   * customValidators
+   * 
+   * @param requestBody 
+   * @param validationErrors 
+   * @returns TValidationErrorFields
+   */
   public customValidators (requestBody: any, validationErrors: TValidationErrorFields): TValidationErrorFields {
     const currentYear = new Date().getFullYear()
     const inventionYear = 1805

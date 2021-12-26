@@ -18,9 +18,9 @@ describe('MovieValidation', () => {
   })
 
   describe('validate', () => {
-    // it('validates without errors', () => {
-    //   expect(validator.validate(payload)).toBeTruthy()
-    // })
+    it('validates without errors', () => {
+      expect(validator.validate(payload)).toBeTruthy()
+    })
 
     each([
       [{ test: ['Comedy'], title: 'Rene', year: 1111, runtime: 1111, director: 'Freddy Smith' }],
@@ -38,12 +38,28 @@ describe('MovieValidation', () => {
       [{ genres: ['Comedy'], title: 'Rene', year: 12312312312, runtime: 1111, director: 'Freddy Smith' }],
       [{ genres: ['Comedy'], title: 'Rene', year: 1999, runtime: 52560000, director: 'Freddy Smith' }],
       [{ genres: ['Comedy'], title: 'Rene', year: 1894, runtime: 52560000, director: 'Freddy Smith' }],
+      [{ genres: ['Comedy'], title: 'Rene', year: 1894, runtime: -1234, director: 'Freddy Smith' }],
     ]).it('throws an exception for required data', (given) => {
       try {
         validator.validate(given)
       } catch (error) {
         expect(error).toBeInstanceOf(ValidationError)
       }
+    })
+
+    it('returns error for five and more digits year', () => {
+      const error = validator.customValidators({ year: 99999 }, [])
+      expect(error).toStrictEqual([{ year: { message: '99999? We guess the moview wasn\'t produced yet!' } }])
+    })
+
+    it('returns error for a year lower than 1805', () => {
+      const error = validator.customValidators({ year: 1804 }, [])
+      expect(error).toStrictEqual([{ year: { message: '1804? The cinematography wasn\'t invented yet!' } }])
+    })
+
+    it('returns error for runtime longer than 52560000 minutes', () => {
+      const error = validator.customValidators({ runtime: 52560001 }, [])
+      expect(error).toStrictEqual([{ runtime: { message: '52560001? Hey dude, if you finish watch the movie you gonna to be dead!' } }])
     })
   })
 })
