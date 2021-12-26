@@ -1,3 +1,3 @@
 export interface IValidation {
-  validate: (requestBody: TMovie) => void 
+  validate: (requestBody: any) => void 
 }

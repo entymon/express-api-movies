@@ -1,4 +1,4 @@
-type TMovie = {
+type TMovieRequest = { 
   genres: string[]
   title: string
   year: number
@@ -8,6 +8,7 @@ type TMovie = {
   plot?: string
   posterUrl?: string
 }
+
 
 // - a list of genres (only predefined ones from db file) (required, array of predefined strings)
 // - title (required, string, max 255 characters)

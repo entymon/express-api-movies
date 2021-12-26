@@ -1,6 +1,7 @@
-import { IValidation } from "./interfaces/validation.interface";
+import ValidationError from "@/errors/validation.error";
+import { IValidation } from "./validation.interface";
 
-const createMovieRules: TRule = {
+const createMovieRules: TRules = {
   genres: {
     required: true,
     dataType: 'array',
@@ -13,7 +14,8 @@ const createMovieRules: TRule = {
   },
   year: {
     required: true,
-    dataType: 'number'
+    dataType: 'number',
+    maxChars: 4
   },
   runtime: {
     required: true,
@@ -38,15 +40,45 @@ const createMovieRules: TRule = {
   }
 }
 
-export class MovieValidation implements IValidation {
+export default class MovieValidation implements IValidation {
   constructor (
-    private rules: TRule = createMovieRules
+    private rules: TRules = createMovieRules
   ) {}
 
   /**
    * validate
    */
-  public validate(requestBody: TMovie) {
-    
+  public validate(requestBody: any): boolean {
+    let validationErrors = {}
+
+    // check for allowed params
+    for (let [field] of Object.entries(requestBody)) {
+      if (!createMovieRules[field]) {
+        validationErrors = { 
+          ...validationErrors,
+          ... {[field]: {message: 'The parameter is not allowed. Allowed list: title, genres, year, runtime, director, plot, actors, posterUrl!'}}
+        }
+      }
+    }
+
+
+    for (let [field, rules] of Object.entries(this.rules)) {
+      if (requestBody[field]) {
+        console.log(field, rules, 'VALUE: ', requestBody[field])
+      } else if (rules.required) {
+        validationErrors = { 
+          ...validationErrors, 
+          ... {[field]: {message: 'The field is required'}}
+        }
+      }
+    }
+
+
+
+    console.log(validationErrors)
+
+    return true
   }
+
+  public assignRule (): void { return }
 }
