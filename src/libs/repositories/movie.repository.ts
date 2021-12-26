@@ -18,16 +18,28 @@ class MovieRepository extends BaseRepository {
   }
 
   /**
+   * clearMovies
    * Remove all movies data
    */
   public clearMovies() {
     this.db.push('/movies', []);
   }
 
+  /**
+   * getMovieGenres
+   * 
+   * @returns string[]
+   */
   public getMovieGenres() {
     return this.db.getData('/genres')
   }
 
+  /**
+   * addMovie
+   * 
+   * @param moviePayload 
+   * @returns TMovieData
+   */
   public addMovie(moviePayload: TMovieRequest): TMovieData {
     const movies = this.db.getData('/movies')
 
@@ -43,16 +55,35 @@ class MovieRepository extends BaseRepository {
     return movieData
   }
 
-  public getMovies(duration: number | null = null) {
+  /**
+   * getMovies
+   * 
+   * @param duration 
+   * @returns Array<TMovieData>
+   */
+  public getMovies(duration: number = 0): Array<TMovieData> {
     const movies = this.db.getData('/movies')
     if (duration === 0) {
-      return [movies[Math.floor(Math.random() * movies.length)]];
+      return [];
     } else {
-      const response: TMovieData[] = movies.filter((movie: TMovieData) => {
-        //
-      })
-      return response
+      const response = this.getMoviesForSelectedDuration(movies, duration)
+      if (response.length > 0) {
+        return [this.getRandomMovie(response)]
+      }
     }
+    return []
+  }
+
+  public getMoviesForSelectedDuration(movies: Array<TMovieData>, duration: number): Array<TMovieData> {
+    const minRuntime = (duration - 10) < 0 ? 0 : (duration - 10)
+    const maxRuntime = duration + 10
+    const response: TMovieData[] = movies.filter((movie: TMovieData) => 
+      minRuntime < movie.runtime && movie.runtime < maxRuntime)
+    return response
+  }
+
+  public getRandomMovie(movies: Array<TMovieData>): TMovieData {
+    return movies[Math.floor(Math.random() * movies.length)]
   }
 }
 
