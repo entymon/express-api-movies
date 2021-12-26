@@ -1,10 +1,7 @@
-import { TMovieData, TMovieRequest } from '@/types/movies.type';
-import ApiError from '@/errors/api.error';
-import BaseRepository from './base.repository';
-
-type TMovieDataWithGenreCounter = TMovieData & {
-  counter?: number
-}
+import { TMovieData, TMovieRequest } from '@/types/movies.type'
+import ApiError from '@/errors/api.error'
+import BaseRepository from './base.repository'
+import MovieService from '../services/movie.service'
 
 class MovieRepository extends BaseRepository {
 
@@ -65,64 +62,30 @@ class MovieRepository extends BaseRepository {
    * @returns Array<TMovieData>
    */
   public getMovies(duration: number = 0, genres: Array<string> = []): Array<TMovieData> {
+    const service = new MovieService()
     const movies = this.db.getData('/movies')
     if (duration === 0 && genres.length === 0) {
-      return [this.getRandomMovie(movies)];
+      return [service.getRandomMovie(movies)];
     }
     
     if (duration !== 0 && genres.length === 0) {
-      const response = this.getMoviesForSelectedDuration(movies, duration)
+      const response = service.getMoviesForSelectedDuration(movies, duration)
       if (response.length > 0) {
-        return [this.getRandomMovie(response)]
+        return [service.getRandomMovie(response)]
       }
     }
 
     if (duration === 0 && genres.length > 0) {
-      return this.getOrderedMoviesByMatchOfGenres(movies, genres)
+      return service.getOrderedMoviesByMatchOfGenres(movies, genres)
     }
 
     if (duration !== 0 && genres.length > 0) {
-      const response = this.getMoviesForSelectedDuration(movies, duration)
+      const response = service.getMoviesForSelectedDuration(movies, duration)
       if (response.length > 0) {
-        return this.getOrderedMoviesByMatchOfGenres(response, genres)
+        return service.getOrderedMoviesByMatchOfGenres(response, genres)
       }
     }
     return []
-  }
-
-  public getOrderedMoviesByMatchOfGenres(movies: Array<TMovieData>, genres: Array<string>): Array<TMovieData> {
-    const response = movies.filter((movie: TMovieDataWithGenreCounter) => {
-      const intersection = genres.filter(element => movie.genres.includes(element))
-      if (intersection.length !== 0) {
-        movie.counter = intersection.length
-        return movie
-      }
-    })
-
-    const final = response.filter(movie => !!movie)
-    final.sort((a: TMovieDataWithGenreCounter ,b: TMovieDataWithGenreCounter) => {
-      if (a.counter && b.counter && a.counter > b.counter) { return -1 }
-      if (a.counter && b.counter && a.counter < b.counter) { return 1 }
-      return 0
-    })
-    return final.map((movie: TMovieDataWithGenreCounter) => {
-      if (movie.counter) {
-        delete movie.counter
-      }
-      return movie
-    })
-  }
-
-  public getMoviesForSelectedDuration(movies: Array<TMovieData>, duration: number): Array<TMovieData> {
-    const minRuntime = (duration - 10) < 0 ? 0 : (duration - 10)
-    const maxRuntime = duration + 10
-    const response: TMovieData[] = movies.filter((movie: TMovieData) => 
-      minRuntime < movie.runtime && movie.runtime < maxRuntime)
-    return response
-  }
-
-  public getRandomMovie(movies: Array<TMovieData>): TMovieData {
-    return movies[Math.floor(Math.random() * movies.length)]
   }
 }
 
