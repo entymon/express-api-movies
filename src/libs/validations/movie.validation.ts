@@ -1,83 +1,71 @@
 import ValidationError from "@/errors/validation.error";
+import BaseValidation from "./base.validation";
 import { IValidation } from "./validation.interface";
 
-const createMovieRules: TRules = {
-  genres: {
-    required: true,
-    dataType: 'array',
-    predefinedValues: ['Comedy', 'Fantasy', 'Crime']
-  },
-  title: {
-    required: true,
-    dataType: 'string',
-    maxChars: 255
-  },
-  year: {
-    required: true,
-    dataType: 'number',
-    maxChars: 4
-  },
-  runtime: {
-    required: true,
-    dataType: 'number'
-  },
-  director: {
-    required: true,
-    dataType: 'string',
-    maxChars: 255
-  },
-  actors: {
-    required: false,
-    dataType: 'string',
-  },
-  plot: {
-    required: false,
-    dataType: 'string',
-  },
-  posterUrl: {
-    required: false,
-    dataType: 'string',
-  }
-}
+export default class MovieValidation extends BaseValidation implements IValidation {
 
-export default class MovieValidation implements IValidation {
-  constructor (
-    private rules: TRules = createMovieRules
-  ) {}
+  constructor () {
+    super({
+      genres: {
+        required: true,
+        dataType: 'array',
+        predefinedValues: ['comedy', 'fantasy', 'crime']
+      },
+      title: {
+        required: true,
+        dataType: 'string',
+        maxChars: 255
+      },
+      year: {
+        required: true,
+        dataType: 'number',
+        maxChars: 4
+      },
+      runtime: {
+        required: true,
+        dataType: 'number'
+      },
+      director: {
+        required: true,
+        dataType: 'string',
+        maxChars: 255
+      },
+      actors: {
+        required: false,
+        dataType: 'string',
+      },
+      plot: {
+        required: false,
+        dataType: 'string',
+      },
+      posterUrl: {
+        required: false,
+        dataType: 'string',
+      }
+    })
+  }
 
   /**
    * validate
+   * 
+   * @param requestBody 
+   * @returns 
    */
-  public validate(requestBody: any): boolean {
-    let validationErrors = {}
+  public validate(requestBody: any): void {
+    let validationErrors: TValidationErrorFields = []
 
-    // check for allowed params
-    for (let [field] of Object.entries(requestBody)) {
-      if (!createMovieRules[field]) {
-        validationErrors = { 
-          ...validationErrors,
-          ... {[field]: {message: 'The parameter is not allowed. Allowed list: title, genres, year, runtime, director, plot, actors, posterUrl!'}}
-        }
-      }
-    }
-
-
+    validationErrors = this.checkIfAllowed(requestBody, validationErrors)    
     for (let [field, rules] of Object.entries(this.rules)) {
       if (requestBody[field]) {
-        console.log(field, rules, 'VALUE: ', requestBody[field])
+        validationErrors = this.ruleValidator(field, requestBody[field], rules, validationErrors)
       } else if (rules.required) {
-        validationErrors = { 
-          ...validationErrors, 
-          ... {[field]: {message: 'The field is required'}}
-        }
+        validationErrors.push({[field]: {message: 'The field is required'}})
       }
     }
 
-
-
-    console.log(validationErrors)
-
-    return true
+    if (validationErrors.length) {
+      throw new ValidationError('Request containes errors', validationErrors)
+    }
   }
 
   public assignRule (): void { return }

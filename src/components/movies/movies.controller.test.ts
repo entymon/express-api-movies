@@ -33,7 +33,7 @@ describe('MoviesController', () => {
         .send({})
         .expect(400)
         .then((response) => {
-          expect(response.body.fields.title.message).toBe('required')
+          expect(response.body.fields.length > 0).toBeTruthy
           expect(response.body.message).toBe('validation error')
           expect(response.body.name).toBe('ValidationError')
           expect(response.body.status).toEqual(400)

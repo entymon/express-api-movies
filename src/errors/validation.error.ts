@@ -7,7 +7,7 @@ class ValidationError extends Error implements IError {
 
   public fields: TValidationErrorFields
 
-  constructor (msg: string, fields: TValidationErrorFields  = {name: {message: ''}}, name = 'ValidationError') {
+  constructor (msg: string, fields: TValidationErrorFields  = [{name: {message: ''}}], name = 'ValidationError') {
     super()
     this.message = msg
     this.name = name

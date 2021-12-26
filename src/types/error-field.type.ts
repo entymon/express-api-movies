@@ -1,3 +1,1 @@
-type TValidationErrorFields = {
-  [key: string] : { message: string }
-}
+type TValidationErrorFields = Array<{[key: string] : { message: string }}>
