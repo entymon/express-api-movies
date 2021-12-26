@@ -24,8 +24,8 @@ describe('MovieService', () => {
   })
 
   describe('getOrderedMoviesByMatchOfGenres', () => {
-    it('returns ordered movies by gender maches', () => {
-      const response = service.getOrderedMoviesByMatchOfGenres(movies, ['Biography', 'Crime', 'Drama'])
+    it('returns ordered movies by gender maches', async () => {
+      const response = await service.getOrderedMoviesByMatchOfGenres(movies, ['Biography', 'Crime', 'Drama'])
       expect(response.length).toEqual(11)
       expect(response[0].genres.length).toEqual(3)
       expect(response).toStrictEqual([
@@ -144,8 +144,8 @@ describe('MovieService', () => {
   })
 
   describe('getMoviesForSelectedDuration', () => {
-    it('returns ordered movies by gender maches', () => {
-      const response = service.getMoviesForSelectedDuration(movies, 120)
+    it('returns ordered movies by gender maches', async () => {
+      const response = await service.getMoviesForSelectedDuration(movies, 120)
       expect(response.length).toEqual(5)
       expect(response).toStrictEqual([
         {

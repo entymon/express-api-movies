@@ -30,7 +30,7 @@ export default class MoviesController extends BaseApi {
     }
   }
 
-  public returnMovies (req: Request, res: Response, next: NextFunction): void {
+  public async returnMovies (req: Request, res: Response, next: NextFunction): Promise<void> {
     let duration = 0
     let genres: Array<string> = []
     if (req.query.duration) {
@@ -41,7 +41,7 @@ export default class MoviesController extends BaseApi {
     }
         
     const repo = MovieRepository.getInstance()
-    const movies = repo.getMovies(duration, genres)
+    const movies = await repo.getMovies(duration, genres)
     
     res.send(movies)
   }

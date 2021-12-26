@@ -6,8 +6,8 @@ type TMovieDataWithGenreCounter = TMovieData & {
 }
 
 interface IMovieService extends IService {
-  getOrderedMoviesByMatchOfGenres (movies: Array<TMovieData>, genres: Array<string>): Array<TMovieData>
-  getMoviesForSelectedDuration(movies: Array<TMovieData>, duration: number): Array<TMovieData>
+  getOrderedMoviesByMatchOfGenres (movies: Array<TMovieData>, genres: Array<string>): Promise<Array<TMovieData>>
+  getMoviesForSelectedDuration(movies: Array<TMovieData>, duration: number): Promise<Array<TMovieData>>
   getRandomMovie(movies: Array<TMovieData>): TMovieData
 }
 
@@ -18,28 +18,30 @@ class MovieService implements IMovieService {
    * 
    * @param movies 
    * @param genres 
-   * @returns 
+   * @returns Promise<Array<TMovieData>>
    */
-  public getOrderedMoviesByMatchOfGenres(movies: Array<TMovieData>, genres: Array<string>): Array<TMovieData> {
-    const response = movies.filter((movie: TMovieDataWithGenreCounter) => {
-      const intersection = genres.filter(element => movie.genres.includes(element))
-      if (intersection.length !== 0) {
-        movie.counter = intersection.length
+  public getOrderedMoviesByMatchOfGenres(movies: Array<TMovieData>, genres: Array<string>): Promise<Array<TMovieData>> {
+    return new Promise((resolve) => {
+      const response = movies.filter((movie: TMovieDataWithGenreCounter) => {
+        const intersection = genres.filter(element => movie.genres.includes(element))
+        if (intersection.length !== 0) {
+          movie.counter = intersection.length
+          return movie
+        }
+      })
+  
+      const final = response.filter(movie => !!movie)
+      final.sort((a: TMovieDataWithGenreCounter ,b: TMovieDataWithGenreCounter) => {
+        if (a.counter && b.counter && a.counter > b.counter) { return -1 }
+        if (a.counter && b.counter && a.counter < b.counter) { return 1 }
+        return 0
+      })
+      resolve(final.map((movie: TMovieDataWithGenreCounter) => {
+        if (movie.counter) {
+          delete movie.counter
+        }
         return movie
-      }
-    })
-
-    const final = response.filter(movie => !!movie)
-    final.sort((a: TMovieDataWithGenreCounter ,b: TMovieDataWithGenreCounter) => {
-      if (a.counter && b.counter && a.counter > b.counter) { return -1 }
-      if (a.counter && b.counter && a.counter < b.counter) { return 1 }
-      return 0
-    })
-    return final.map((movie: TMovieDataWithGenreCounter) => {
-      if (movie.counter) {
-        delete movie.counter
-      }
-      return movie
+      }))
     })
   }
 
@@ -48,14 +50,16 @@ class MovieService implements IMovieService {
    * 
    * @param movies 
    * @param duration 
-   * @returns Array<TMovieData>
+   * @returns Promise<Array<TMovieData>>
    */
-  public getMoviesForSelectedDuration(movies: Array<TMovieData>, duration: number): Array<TMovieData> {
-    const minRuntime = (duration - 10) < 0 ? 0 : (duration - 10)
-    const maxRuntime = duration + 10
-    const response: TMovieData[] = movies.filter((movie: TMovieData) => 
-      minRuntime < movie.runtime && movie.runtime < maxRuntime)
-    return response
+  public getMoviesForSelectedDuration(movies: Array<TMovieData>, duration: number): Promise<Array<TMovieData>> {
+    return new Promise((resolve) => {
+      const minRuntime = (duration - 10) < 0 ? 0 : (duration - 10)
+      const maxRuntime = duration + 10
+      const response: TMovieData[] = movies.filter((movie: TMovieData) => 
+        minRuntime < movie.runtime && movie.runtime < maxRuntime)
+      resolve(response)
+    })
   }
 
   /**

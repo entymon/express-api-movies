@@ -59,9 +59,9 @@ class MovieRepository extends BaseRepository {
    * 
    * @param duration 
    * @param genres 
-   * @returns Array<TMovieData>
+   * @returns Promise<Array<TMovieData>>
    */
-  public getMovies(duration: number = 0, genres: Array<string> = []): Array<TMovieData> {
+  public async getMovies(duration: number = 0, genres: Array<string> = []): Promise<Array<TMovieData>> {
     const service = new MovieService()
     const movies = this.db.getData('/movies')
     if (duration === 0 && genres.length === 0) {
@@ -69,7 +69,7 @@ class MovieRepository extends BaseRepository {
     }
     
     if (duration !== 0 && genres.length === 0) {
-      const response = service.getMoviesForSelectedDuration(movies, duration)
+      const response = await service.getMoviesForSelectedDuration(movies, duration)
       if (response.length > 0) {
         return [service.getRandomMovie(response)]
       }
@@ -80,7 +80,7 @@ class MovieRepository extends BaseRepository {
     }
 
     if (duration !== 0 && genres.length > 0) {
-      const response = service.getMoviesForSelectedDuration(movies, duration)
+      const response = await service.getMoviesForSelectedDuration(movies, duration)
       if (response.length > 0) {
         return service.getOrderedMoviesByMatchOfGenres(response, genres)
       }

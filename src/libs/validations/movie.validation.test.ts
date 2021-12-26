@@ -51,7 +51,7 @@ describe('MovieValidation', () => {
   describe('yearValidators', () => {
     it('returns error for five and more digits year', () => {
       const error = validator.yearValidators({ year: 99999 }, [])
-      expect(error).toStrictEqual([{ year: { message: '99999? We guess the moview wasn\'t produced yet!' } }])
+      expect(error).toStrictEqual([{ year: { message: '99999? We guess the movie wasn\'t produced yet!' } }])
     })
 
     it('returns error for a year lower than 1805', () => {
