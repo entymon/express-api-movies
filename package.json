@@ -26,12 +26,15 @@
     "start": "concurrently npm:start:*"
   },
   "devDependencies": {
+    "@babel/core": "^7.16.5",
+    "@babel/preset-env": "^7.16.5",
     "@types/app-root-path": "^1.2.4",
     "@types/cors": "^2.8.12",
     "@types/jest": "26.0.15",
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "4.6.1",
     "@typescript-eslint/parser": "4.6.1",
+    "babel-loader": "^8.2.3",
     "eslint": "7.13.0",
     "eslint-config-standard-with-typescript": "19.0.1",
     "eslint-plugin-import": "2.22.1",
@@ -46,7 +49,7 @@
     "ts-jest": "26.4.3",
     "ts-loader": "8.0.9",
     "typescript": "4.0.5",
-    "webpack": "4.44.2",
+    "webpack": "^4.44.2",
     "webpack-cli": "3.3.11"
   }
 }

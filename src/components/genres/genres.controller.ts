@@ -13,9 +13,13 @@ export default class GenresController extends BaseApi {
     this.router.get('/', this.returnGenres)
   }
 
-  public returnGenres (req: Request, res: Response, next: NextFunction): void {
-    const movieRepository = MovieRepository.getInstance()
-    const genres = movieRepository.getMovieGenres()
-    res.send(genres)
+  public async returnGenres (req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const movieRepository = MovieRepository.getInstance()
+      const genres = await movieRepository.getMovieGenres()
+      res.send(genres)
+    } catch (error) {
+      next(error)
+    }
   }
 }

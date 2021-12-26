@@ -1,6 +1,5 @@
 import BaseRepository from './base.repository';
 
-// TODO: add functionality to retrieve genres
 // TODO: add functionality to add new movie
 // TODO: add functionality to retrieve a movie
 
@@ -14,8 +13,8 @@ class MovieRepository extends BaseRepository {
       return MovieRepository.instance;
   }
 
-  public getMovieGenres() {
-      return this.db.getData("/genres");
+  public async getMovieGenres() {
+      return this.db ? await this.db.getData('/genres') : []
   }
 }
 

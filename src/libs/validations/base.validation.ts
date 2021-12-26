@@ -8,7 +8,7 @@ class BaseValidation {
    * @param errors 
    * @returns TValidationErrorFields
    */
-   public checkIfAllowed(requestBody: any, errors: TValidationErrorFields): TValidationErrorFields {
+   protected checkIfAllowed(requestBody: any, errors: TValidationErrorFields): TValidationErrorFields {
     for (let [field] of Object.entries(requestBody)) {
       if (!this.rules[field]) {
         errors.push({[field]: {message: 'The parameter is not allowed. Allowed list: title, genres, year, runtime, director, plot, actors, posterUrl!'}})
@@ -25,7 +25,7 @@ class BaseValidation {
    * @param errors 
    * @returns TValidationErrorFields
    */
-  public ruleValidator (field: string, data: any, rules: TRule, errors: TValidationErrorFields): TValidationErrorFields {
+  protected ruleValidator (field: string, data: any, rules: TRule, errors: TValidationErrorFields): TValidationErrorFields {
     switch (rules.dataType) {
       case 'array':
         return this.arrayRuleType(field, data, rules, errors)

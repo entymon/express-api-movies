@@ -15,13 +15,17 @@ export default class MoviesController extends BaseApi {
   }
 
   public createMovie (req: Request, res: Response, next: NextFunction): void {
-    const validator = new MovieValidation()
-    validator.validate(req.body)
-
-    // TODO: check if title already exist -> ApiError
-    // TODO: save object
-
-    res.status(201).json(req.body)
+    try {
+      const validator = new MovieValidation()
+      validator.validate(req.body)
+  
+      // TODO: check if title already exist -> ApiError
+      // TODO: save object
+  
+      res.status(201).json(req.body)
+    } catch (error) {
+      next(error)
+    }
   }
 
   public returnMovies (req: Request, res: Response, next: NextFunction): void {

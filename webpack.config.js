@@ -35,6 +35,16 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.m?js$/, 
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env']
+        },
+        exclude: [
+          path.resolve(__dirname, '.webpack'),
+        ]
+      },
+      {
         test: /\.(ts)$/,
         loader: 'ts-loader',
         include: [
@@ -50,7 +60,7 @@ module.exports = {
           transpileOnly: true,
           experimentalWatchApi: true,
         },
-      },
+      }
     ]
   },
 

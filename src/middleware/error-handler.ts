@@ -26,9 +26,8 @@ const addErrorHandler = (
       case 'ApiError':
       default:
         body = {
-          fields: err.fields,
           message: err.message || 'An error occurred during the request.',
-          name: err.name,
+          name: err.name || 'ApiError',
           status,
           stack: err.stack
         }

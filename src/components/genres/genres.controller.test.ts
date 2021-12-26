@@ -10,7 +10,7 @@ describe('GenresController', () => {
     server = app.getServer()
   })
 
-  describe('createMovie', () => {
+  describe('GET /api/genres', () => {
 
     it ('makes a success call', async () => {
       await supertest(server).get('/api/genres')
