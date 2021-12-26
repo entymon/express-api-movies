@@ -32,13 +32,16 @@ export default class MoviesController extends BaseApi {
 
   public returnMovies (req: Request, res: Response, next: NextFunction): void {
     let duration = 0
-    let genres = []
+    let genres: Array<string> = []
     if (req.query.duration) {
       duration = parseInt(req.query.duration as string)
     }
+    if (req.query.genres) {
+      genres = req.query.genres as Array<string>
+    }
         
     const repo = MovieRepository.getInstance()
-    const movies = repo.getMovies(duration)
+    const movies = repo.getMovies(duration, genres)
     
     res.send(movies)
   }

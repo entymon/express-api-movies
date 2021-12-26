@@ -2,7 +2,9 @@ import { TMovieData, TMovieRequest } from '@/types/movies.type';
 import ApiError from '@/errors/api.error';
 import BaseRepository from './base.repository';
 
-// TODO: add functionality to retrieve a movie
+type TMovieDataWithGenreCounter = TMovieData & {
+  counter?: number
+}
 
 class MovieRepository extends BaseRepository {
 
@@ -59,16 +61,47 @@ class MovieRepository extends BaseRepository {
    * getMovies
    * 
    * @param duration 
+   * @param genres 
    * @returns Array<TMovieData>
    */
-  public getMovies(duration: number = 0): Array<TMovieData> {
+  public getMovies(duration: number = 0, genres: Array<string> = []): Array<TMovieData> {
     const movies = this.db.getData('/movies')
-    if (duration === 0) {
-      return [];
-    } else {
+    if (duration === 0 && genres.length === 0) {
+      return [this.getRandomMovie(movies)];
+    }
+    
+    if (duration !== 0 && genres.length === 0) {
       const response = this.getMoviesForSelectedDuration(movies, duration)
       if (response.length > 0) {
         return [this.getRandomMovie(response)]
+      }
+    }
+
+    if (duration === 0 && genres.length > 0) {
+      let response: Array<TMovieDataWithGenreCounter> = []
+      response = movies.map((movie: TMovieDataWithGenreCounter) => {
+        const intersection = genres.filter(element => movie.genres.includes(element))
+        if (intersection.length !== 0) {
+          movie.counter = intersection.length
+          return movie
+        }
+      })
+
+      response = response.filter((movie: TMovieDataWithGenreCounter) => !!movie)
+
+      response.sort((a: TMovieDataWithGenreCounter ,b: TMovieDataWithGenreCounter) => {
+        if (a.counter && b.counter && a.counter > b.counter) { return -1 }
+        if (a.counter && b.counter && a.counter < b.counter) { return 1 }
+        return 0
+      })
+
+      return response
+    }
+
+    if (duration !== 0 && genres.length > 0) {
+      const response = this.getMoviesForSelectedDuration(movies, duration)
+      if (response.length > 0) {
+        
       }
     }
     return []

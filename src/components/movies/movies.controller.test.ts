@@ -127,5 +127,18 @@ describe('MoviesController', () => {
           expect(response.body.length).toEqual(0)
         })
     })
+
+    it('return ordered array of movies for categories', async () => {
+      await supertest(server).get('/api/movie?genres[]=Biography&genres[]=Crime&genres[]=Drama')
+        .send({})
+        .expect(200)
+        .then((response) => {
+          expect(response.body.length).toEqual(11)
+          expect(response.body[0].genres.length).toEqual(3)
+          expect(response.body[0].genres.includes('Biography')).toBeTruthy()
+          expect(response.body[0].genres.includes('Crime')).toBeTruthy()
+          expect(response.body[0].genres.includes('Drama')).toBeTruthy()
+        })
+    })
   })
 })
