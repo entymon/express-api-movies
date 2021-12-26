@@ -1,6 +1,5 @@
 import { Application, NextFunction, Request, Response } from 'express'
 import BaseApi from '../base-api'
-import ValidationError from '@/errors/validation.error'
 import MovieValidation from '@/libs/validations/movie.validation'
 
 export default class MoviesController extends BaseApi {
@@ -18,6 +17,8 @@ export default class MoviesController extends BaseApi {
   public createMovie (req: Request, res: Response, next: NextFunction): void {
     const validator = new MovieValidation()
     validator.validate(req.body)
+
+    // TODO: save object
 
     res.status(201).json({ 
       genres: ['Comedy'],

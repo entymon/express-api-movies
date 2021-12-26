@@ -63,10 +63,25 @@ export default class MovieValidation extends BaseValidation implements IValidati
       }
     }
 
+    this.customValidators(requestBody, validationErrors)
+
     if (validationErrors.length) {
       throw new ValidationError('Request containes errors', validationErrors)
     }
   }
 
-  public assignRule (): void { return }
+  public customValidators (requestBody: any, validationErrors: TValidationErrorFields): TValidationErrorFields {
+    const currentYear = new Date().getFullYear()
+    const inventionYear = 1805
+    if (requestBody.year && requestBody.year > currentYear ) {
+      validationErrors.push({['year']: {message: `${requestBody.year}? We guess the moview wasn't produced yet!`}})
+    }
+    if (requestBody.year && requestBody.year < inventionYear ) {
+      validationErrors.push({['year']: {message: `${requestBody.year}? The cinematography wasn't invented yet!`}})
+    }
+    if (requestBody.runtime && requestBody.runtime > 52560000) {
+      validationErrors.push({['runtime']: {message: `${requestBody.runtime}? Hey dude, if you finish watch the movie you gonna to be dead!`}})
+    }
+    return validationErrors
+  }
 }

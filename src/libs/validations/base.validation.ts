@@ -40,8 +40,10 @@ class BaseValidation {
         return errors
       case 'number':
         if (typeof data !== rules.dataType) {
-          errors.push({[field]: {message: 'invalid data type'}})
-          
+          errors.push({[field]: {message: 'invalid data type'}})  
+        }
+        if (data < 0) {
+          errors.push({[field]: {message: 'negative value are not allowed'}})
         }
         return errors
       default:
