@@ -46,19 +46,23 @@ describe('MovieValidation', () => {
         expect(error).toBeInstanceOf(ValidationError)
       }
     })
+  })
 
+  describe('yearValidators', () => {
     it('returns error for five and more digits year', () => {
-      const error = validator.customValidators({ year: 99999 }, [])
+      const error = validator.yearValidators({ year: 99999 }, [])
       expect(error).toStrictEqual([{ year: { message: '99999? We guess the moview wasn\'t produced yet!' } }])
     })
 
     it('returns error for a year lower than 1805', () => {
-      const error = validator.customValidators({ year: 1804 }, [])
+      const error = validator.yearValidators({ year: 1804 }, [])
       expect(error).toStrictEqual([{ year: { message: '1804? The cinematography wasn\'t invented yet!' } }])
     })
+  })
 
+  describe('runtimeValidators', () => {
     it('returns error for runtime longer than 52560000 minutes', () => {
-      const error = validator.customValidators({ runtime: 52560001 }, [])
+      const error = validator.runtimeValidators({ runtime: 52560001 }, [])
       expect(error).toStrictEqual([{ runtime: { message: '52560001? Hey dude, if you finish watch the movie you gonna to be dead!' } }])
     })
   })

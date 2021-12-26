@@ -63,7 +63,8 @@ export default class MovieValidation extends BaseValidation implements IValidati
       }
     }
 
-    this.customValidators(requestBody, validationErrors)
+    validationErrors = this.yearValidators(requestBody, validationErrors)
+    validationErrors = this.runtimeValidators(requestBody, validationErrors)
 
     if (validationErrors.length) {
       throw new ValidationError('Request containes errors', validationErrors)
@@ -73,13 +74,13 @@ export default class MovieValidation extends BaseValidation implements IValidati
   }
 
   /**
-   * customValidators
+   * yearValidators
    * 
    * @param requestBody 
    * @param validationErrors 
    * @returns TValidationErrorFields
    */
-  public customValidators (requestBody: any, validationErrors: TValidationErrorFields): TValidationErrorFields {
+  public yearValidators (requestBody: any, validationErrors: TValidationErrorFields): TValidationErrorFields {
     const currentYear = new Date().getFullYear()
     const inventionYear = 1805
     if (requestBody.year && requestBody.year > currentYear ) {
@@ -88,6 +89,17 @@ export default class MovieValidation extends BaseValidation implements IValidati
     if (requestBody.year && requestBody.year < inventionYear ) {
       validationErrors.push({['year']: {message: `${requestBody.year}? The cinematography wasn't invented yet!`}})
     }
+    return validationErrors
+  }
+
+  /**
+   * runtimeValidators
+   * 
+   * @param requestBody 
+   * @param validationErrors 
+   * @returns 
+   */
+  public runtimeValidators (requestBody: any, validationErrors: TValidationErrorFields): TValidationErrorFields {
     if (requestBody.runtime && requestBody.runtime > 52560000) {
       validationErrors.push({['runtime']: {message: `${requestBody.runtime}? Hey dude, if you finish watch the movie you gonna to be dead!`}})
     }

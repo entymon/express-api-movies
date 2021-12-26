@@ -39,5 +39,46 @@ describe('MoviesController', () => {
           expect(response.body.status).toEqual(400)
         })
     })
+
+    it('returns multi error for same field', async () => {
+      const givenPayload = {
+        genres: [
+          'Comedy'
+        ],
+        runtime: 9999,
+        year: '1801',
+        title: 'Lolek',
+        director: 'Freddy Smith'
+      }
+      const expectedResponse = {
+        fields: [
+          {
+            year: {
+              message: 'invalid data type'
+            }
+          },
+          {
+            year: {
+              message: '1801? The cinematography wasn\'t invented yet!'
+            }
+          }
+        ],
+        message: 'validation error',
+        name: 'ValidationError',
+        status: 400
+      }
+      await supertest(server).post('/api/movie')
+        .send(givenPayload)
+        .expect(400)
+        .then((response) => {
+          expect(response.body.fields.length > 0).toBeTruthy
+          expect(response.body.fields[0].year.message).toBe('invalid data type')
+          expect(response.body.fields[1].year.message).toBe('1801? The cinematography wasn\'t invented yet!')
+          expect(response.body.message).toBe('validation error')
+          expect(response.body.name).toBe('ValidationError')
+          expect(response.body.status).toEqual(400)
+        })
+      
+    })
   })
 })
