@@ -10,13 +10,13 @@ abstract class BaseRepository {
 
   protected db: JsonDB
 
-  protected constructor () {
-    const path = `${appRoot.path}/data/db.json`
-    console.log(fs.existsSync(path), 'LOL')
-    if (!fs.existsSync(path)) {
+  protected constructor (
+    private path = (`${appRoot.path}/data/db.json`).replace('/build', '')
+  ) {
+    if (!fs.existsSync(this.path)) {
       throw new ApiError('Database file does not exist', 500, 'ApiError') 
     }
-    const config = new Config(path, true, false, '/')
+    const config = new Config(this.path, true, false, '/')
     this.db = new JsonDB(config)
   }
 }

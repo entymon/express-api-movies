@@ -6,15 +6,14 @@ import BaseRepository from './base.repository';
 class MovieRepository extends BaseRepository {
 
   public static getInstance(): MovieRepository {
-      if (!MovieRepository.instance) {
-        MovieRepository.instance = new MovieRepository();
-      }
-
-      return MovieRepository.instance;
+    if (!MovieRepository.instance) {
+      MovieRepository.instance = new MovieRepository();
+    }
+    return MovieRepository.instance;
   }
 
-  public async getMovieGenres() {
-      return this.db ? await this.db.getData('/genres') : []
+  public getMovieGenres() {
+      return this.db.getData('/genres')
   }
 }
 

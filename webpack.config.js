@@ -45,6 +45,16 @@ module.exports = {
         ]
       },
       {
+        test: /\.json$/,
+        loader: 'json-loader',
+        exclude: [
+          [
+            path.resolve(__dirname, 'node_modules'),
+            path.resolve(__dirname, '.webpack'),
+          ],
+        ],
+      },
+      {
         test: /\.(ts)$/,
         loader: 'ts-loader',
         include: [
