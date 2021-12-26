@@ -23,7 +23,7 @@ export default class MoviesController extends BaseApi {
 
       const repo = MovieRepository.getInstance()
       const newMovie: TMovieData = repo.addMovie(req.body)
-  
+
       res.status(201).json(newMovie)
     } catch (error) {
       next(error)
@@ -32,17 +32,17 @@ export default class MoviesController extends BaseApi {
 
   public async returnMovies (req: Request, res: Response, next: NextFunction): Promise<void> {
     let duration = 0
-    let genres: Array<string> = []
+    let genres: string[] = []
     if (req.query.duration) {
       duration = parseInt(req.query.duration as string)
     }
     if (req.query.genres) {
-      genres = req.query.genres as Array<string>
+      genres = req.query.genres as string[]
     }
-        
+
     const repo = MovieRepository.getInstance()
     const movies = await repo.getMovies(duration, genres)
-    
+
     res.send(movies)
   }
 }

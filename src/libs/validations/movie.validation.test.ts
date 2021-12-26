@@ -12,7 +12,6 @@ const payload = {
 }
 
 describe('MovieValidation', () => {
-
   beforeAll(() => {
     validator = new MovieValidation()
   })
@@ -25,7 +24,7 @@ describe('MovieValidation', () => {
     each([
       [{ test: ['Comedy'], title: 'Rene', year: 1111, runtime: 1111, director: 'Freddy Smith' }],
       [{ genres: ['Comedy'], title: 'Rene', year: 1111, runtime: 1111 }],
-      [{ genres: ['Comedy'], title: 'Rene'}],
+      [{ genres: ['Comedy'], title: 'Rene' }],
       [{ genres: ['Comedy'], title: 'Rene', year: 1111, director: 'Freddy Smith' }],
       [{ genres: ['Comedy'], title: 'Rene', runtime: 1111, director: 'Freddy Smith' }],
       [{ genres: ['Comedy'], year: 1111, runtime: 1111, director: 'Freddy Smith' }],
@@ -38,7 +37,7 @@ describe('MovieValidation', () => {
       [{ genres: ['Comedy'], title: 'Rene', year: 12312312312, runtime: 1111, director: 'Freddy Smith' }],
       [{ genres: ['Comedy'], title: 'Rene', year: 1999, runtime: 52560000, director: 'Freddy Smith' }],
       [{ genres: ['Comedy'], title: 'Rene', year: 1894, runtime: 52560000, director: 'Freddy Smith' }],
-      [{ genres: ['Comedy'], title: 'Rene', year: 1894, runtime: -1234, director: 'Freddy Smith' }],
+      [{ genres: ['Comedy'], title: 'Rene', year: 1894, runtime: -1234, director: 'Freddy Smith' }]
     ]).it('throws an exception for required data', (given) => {
       try {
         validator.validate(given)
@@ -67,7 +66,3 @@ describe('MovieValidation', () => {
     })
   })
 })
-
-
-
-      

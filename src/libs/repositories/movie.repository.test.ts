@@ -1,5 +1,5 @@
-import ApiError from "@/errors/api.error"
-import MovieRepository from "./movie.repository"
+import ApiError from '@/errors/api.error'
+import MovieRepository from './movie.repository'
 
 let repo: MovieRepository
 const payload = {
@@ -11,7 +11,6 @@ const payload = {
 }
 
 describe('MovieRepository', () => {
-
   beforeAll(() => {
     repo = MovieRepository.getInstance('dbTest')
   })
@@ -36,27 +35,27 @@ describe('MovieRepository', () => {
     it('returns all categories', async () => {
       const genres = await repo.getMovieGenres()
       expect(genres).toStrictEqual([
-        "Comedy",
-        "Fantasy",
-        "Crime",
-        "Drama",
-        "Music",
-        "Adventure",
-        "History",
-        "Thriller",
-        "Animation",
-        "Family",
-        "Mystery",
-        "Biography",
-        "Action",
-        "Film-Noir",
-        "Romance",
-        "Sci-Fi",
-        "War",
-        "Western",
-        "Horror",
-        "Musical",
-        "Sport"
+        'Comedy',
+        'Fantasy',
+        'Crime',
+        'Drama',
+        'Music',
+        'Adventure',
+        'History',
+        'Thriller',
+        'Animation',
+        'Family',
+        'Mystery',
+        'Biography',
+        'Action',
+        'Film-Noir',
+        'Romance',
+        'Sci-Fi',
+        'War',
+        'Western',
+        'Horror',
+        'Musical',
+        'Sport'
       ])
     })
   })

@@ -1,3 +1,3 @@
 export interface IValidation {
-  validate: (requestBody: any) => void 
+  validate: (requestBody: any) => void
 }

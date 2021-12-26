@@ -19,5 +19,5 @@ module.exports = {
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': ['error'],
   },
-  ignorePattern: "webpack.config.js",
+  ignorePatterns: "webpack.config.js"
 };

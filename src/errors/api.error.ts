@@ -1,4 +1,4 @@
-import { IError } from "@/errors/error.interface"
+import { IError } from '@/errors/error.interface'
 
 class ApiError extends Error implements IError {
   public status = 500

@@ -4,8 +4,7 @@ import BaseRepository from './base.repository'
 import MovieService from '../services/movie.service'
 
 class MovieRepository extends BaseRepository {
-
-  public static getInstance(fileName: string | null = null): MovieRepository {
+  public static getInstance (fileName: string | null = null): MovieRepository {
     if (!MovieRepository.instance) {
       if (fileName) {
         MovieRepository.instance = new MovieRepository(fileName)
@@ -20,26 +19,26 @@ class MovieRepository extends BaseRepository {
    * clearMovies
    * Remove all movies data
    */
-  public clearMovies() {
-    this.db.push('/movies', []);
+  public clearMovies () {
+    this.db.push('/movies', [])
   }
 
   /**
    * getMovieGenres
-   * 
+   *
    * @returns string[]
    */
-  public getMovieGenres() {
+  public getMovieGenres () {
     return this.db.getData('/genres')
   }
 
   /**
    * addMovie
-   * 
-   * @param moviePayload 
+   *
+   * @param moviePayload
    * @returns TMovieData
    */
-  public addMovie(moviePayload: TMovieRequest): TMovieData {
+  public addMovie (moviePayload: TMovieRequest): TMovieData {
     const movies = this.db.getData('/movies')
 
     const duplication = movies.filter((movie: TMovieData) => movie.title === moviePayload.title)
@@ -50,24 +49,24 @@ class MovieRepository extends BaseRepository {
     const movieData: TMovieData = moviePayload
     movieData.id = movies.length + 1
 
-    this.db.push('/movies[]', movieData, true);
+    this.db.push('/movies[]', movieData, true)
     return movieData
   }
 
   /**
    * getMovies
-   * 
-   * @param duration 
-   * @param genres 
+   *
+   * @param duration
+   * @param genres
    * @returns Promise<Array<TMovieData>>
    */
-  public async getMovies(duration: number = 0, genres: Array<string> = []): Promise<Array<TMovieData>> {
+  public async getMovies (duration = 0, genres: string[] = []): Promise<TMovieData[]> {
     const service = new MovieService()
     const movies = this.db.getData('/movies')
     if (duration === 0 && genres.length === 0) {
-      return [service.getRandomMovie(movies)];
+      return [service.getRandomMovie(movies)]
     }
-    
+
     if (duration !== 0 && genres.length === 0) {
       const response = await service.getMoviesForSelectedDuration(movies, duration)
       if (response.length > 0) {
@@ -76,13 +75,13 @@ class MovieRepository extends BaseRepository {
     }
 
     if (duration === 0 && genres.length > 0) {
-      return service.getOrderedMoviesByMatchOfGenres(movies, genres)
+      return await service.getOrderedMoviesByMatchOfGenres(movies, genres)
     }
 
     if (duration !== 0 && genres.length > 0) {
       const response = await service.getMoviesForSelectedDuration(movies, duration)
       if (response.length > 0) {
-        return service.getOrderedMoviesByMatchOfGenres(response, genres)
+        return await service.getOrderedMoviesByMatchOfGenres(response, genres)
       }
     }
     return []

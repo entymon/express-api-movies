@@ -13,7 +13,7 @@ const addErrorHandler = (
     const status: number = err.status || StatusCodes.INTERNAL_SERVER_ERROR
     let body: unknown
 
-    switch(err.name) {        
+    switch (err.name) {
       case 'ValidationError':
         body = {
           fields: err.fields,
@@ -22,7 +22,7 @@ const addErrorHandler = (
           status
         }
         res.status(status).json(body)
-        break;
+        break
       case 'ApiError':
       default:
         body = {
@@ -32,7 +32,7 @@ const addErrorHandler = (
           stack: err.stack
         }
         res.status(status).json(body)
-        break;
+        break
     }
   }
   next()
