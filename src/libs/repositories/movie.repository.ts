@@ -3,7 +3,14 @@ import ApiError from '@/errors/api.error'
 import BaseRepository from './base.repository'
 import MovieService from '../services/movie.service'
 
-class MovieRepository extends BaseRepository {
+interface IMovieRepository {
+  clearMovies: () => void
+  getMovieGenres: () => string[]
+  addMovie: (moviePayload: TMovieRequest) => TMovieData
+  getMovies: (duration: number, genres: string[]) => TMovieData[]
+}
+
+class MovieRepository extends BaseRepository implements IMovieRepository {
   public static getInstance (fileName: string | null = null): MovieRepository {
     if (!MovieRepository.instance) {
       if (fileName) {
@@ -58,9 +65,9 @@ class MovieRepository extends BaseRepository {
    *
    * @param duration
    * @param genres
-   * @returns Promise<Array<TMovieData>>
+   * @returns TMovieData[]
    */
-  public async getMovies (duration = 0, genres: string[] = []): Promise<TMovieData[]> {
+  public getMovies (duration = 0, genres: string[] = []): TMovieData[] {
     const service = new MovieService()
     const movies = this.db.getData('/movies')
     if (duration === 0 && genres.length === 0) {
@@ -68,7 +75,7 @@ class MovieRepository extends BaseRepository {
     }
 
     if (duration !== 0 && genres.length === 0) {
-      const response = await service.getMoviesForSelectedDuration(movies, duration)
+      const response = service.getMoviesForSelectedDuration(movies, duration)
       if (response.length > 0) {
         return [service.getRandomMovie(response)]
       }
@@ -79,7 +86,7 @@ class MovieRepository extends BaseRepository {
     }
 
     if (duration !== 0 && genres.length > 0) {
-      const response = await service.getMoviesForSelectedDuration(movies, duration)
+      const response = service.getMoviesForSelectedDuration(movies, duration)
       if (response.length > 0) {
         return service.getOrderedMoviesByMatchOfGenres(response, genres)
       }
