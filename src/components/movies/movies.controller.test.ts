@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import supertest from 'supertest'
 import { Express } from 'express'
 import App from '@/app'
@@ -52,7 +53,7 @@ describe('MoviesController', () => {
       await supertest(server).post('/api/movie')
         .send(payload)
         .expect(201)
-        .then((response) => {
+        .then((response: any) => {
           expect(response.body).toStrictEqual(expectedData)
         })
     })
@@ -61,7 +62,7 @@ describe('MoviesController', () => {
       await supertest(server).post('/api/movie')
         .send({})
         .expect(400)
-        .then((response) => {
+        .then((response: any) => {
           expect(response.body.fields.length > 0).toBeTruthy()
           expect(response.body.message).toBe('validation error')
           expect(response.body.name).toBe('ValidationError')
@@ -104,7 +105,7 @@ describe('MoviesController', () => {
       await supertest(server).get('/api/movie')
         .send({})
         .expect(200)
-        .then((response) => {
+        .then((response: any) => {
           expect(response.body.length).toEqual(1)
         })
     })
@@ -113,7 +114,7 @@ describe('MoviesController', () => {
       await supertest(server).get('/api/movie?duration=120')
         .send({})
         .expect(200)
-        .then((response) => {
+        .then((response: any) => {
           expect(response.body.length).toEqual(1)
         })
     })
@@ -122,7 +123,7 @@ describe('MoviesController', () => {
       await supertest(server).get('/api/movie?duration=12000')
         .send({})
         .expect(200)
-        .then((response) => {
+        .then((response: any) => {
           expect(response.body.length).toEqual(0)
         })
     })
@@ -131,7 +132,7 @@ describe('MoviesController', () => {
       await supertest(server).get('/api/movie?genres[]=Biography&genres[]=Crime&genres[]=Drama')
         .send({})
         .expect(200)
-        .then((response) => {
+        .then((response: any) => {
           expect(response.body.length).toEqual(11)
           expect(response.body[0].genres.length).toEqual(3)
           expect(response.body[0].genres.includes('Biography')).toBeTruthy()
@@ -144,7 +145,7 @@ describe('MoviesController', () => {
       await supertest(server).get('/api/movie?duration=120&genres[]=Biography&genres[]=Crime&genres[]=Drama')
         .send({})
         .expect(200)
-        .then((response) => {
+        .then((response: any) => {
           expect(response.body.length).toEqual(4)
           expect(response.body[0].genres.length).toEqual(3)
           expect(response.body[0].genres.includes('Biography')).toBeTruthy()
