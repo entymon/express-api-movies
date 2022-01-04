@@ -28,7 +28,7 @@ describe('MovieRepository', () => {
 
   describe('getMovieGenres', () => {
     it('returns all categories', async () => {
-      const genres = await repo.getMovieGenres()
+      const genres = repo.getMovieGenres()
       expect(genres).toStrictEqual([
         'Comedy',
         'Fantasy',
