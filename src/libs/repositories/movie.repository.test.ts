@@ -24,11 +24,6 @@ describe('MovieRepository', () => {
         expect(error).toBeInstanceOf(ApiError)
       }
     })
-
-    it('add new movie', () => {
-      expect(1).toBe(1)
-      // TODO: remove after test
-    })
   })
 
   describe('getMovieGenres', () => {
